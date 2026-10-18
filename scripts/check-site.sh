@@ -6,7 +6,11 @@ readonly ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 rm -rf public
-hugo --gc --minify
+hugo_args=(--gc --minify)
+if [[ -n "${SITE_BASE_URL:-}" ]]; then
+  hugo_args+=(--baseURL "$SITE_BASE_URL")
+fi
+hugo "${hugo_args[@]}"
 
 assert_page() {
   local page="$1"
@@ -24,6 +28,17 @@ assert_contains() {
 
   if ! grep -Fq -- "$expected" "$file"; then
     printf 'Missing %s in %s: %s\n' "$description" "$file" "$expected" >&2
+    exit 1
+  fi
+}
+
+assert_matches() {
+  local file="$1"
+  local expected="$2"
+  local description="$3"
+
+  if ! grep -Eq -- "$expected" "$file"; then
+    printf 'Missing %s in %s matching: %s\n' "$description" "$file" "$expected" >&2
     exit 1
   fi
 }
@@ -64,6 +79,7 @@ assert_single_h1() {
 
 readonly -a EXPECTED_PAGES=(
   "public/index.html"
+  "public/404.html"
   "public/buku/index.html"
   "public/buku/contoh-buku/index.html"
   "public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
@@ -76,6 +92,7 @@ for page in "${EXPECTED_PAGES[@]}"; do
 done
 
 readonly HOME_PAGE="public/index.html"
+readonly NOT_FOUND_PAGE="public/404.html"
 readonly BOOK_INDEX="public/buku/index.html"
 readonly EXAMPLE_BOOK="public/buku/contoh-buku/index.html"
 readonly CHAPTER_ONE="public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
@@ -85,6 +102,12 @@ readonly CHAPTER_THREE="public/buku/contoh-buku/bab-3-pelajaran-utama/index.html
 assert_href "$HOME_PAGE" "/read-summary/buku/"
 assert_href "$HOME_PAGE" "/read-summary/buku/contoh-buku/"
 assert_href "$BOOK_INDEX" "/read-summary/buku/contoh-buku/"
+assert_matches "$HOME_PAGE" '<html[^>]*lang="?id(-ID)?"?([[:space:]>])' "Indonesian HTML language"
+assert_matches "$HOME_PAGE" '<link[^>]*rel="?canonical"?[^>]*href="?https://thomasbudiarjo\.github\.io/read-summary/"?' "canonical project URL"
+
+assert_contains "$NOT_FOUND_PAGE" "Halaman tidak ditemukan" "Indonesian not-found heading"
+assert_contains "$NOT_FOUND_PAGE" "Halaman yang Anda cari tidak ada atau telah dipindahkan." "Indonesian not-found message"
+assert_href "$NOT_FOUND_PAGE" "/read-summary/"
 
 for chapter_path in \
   "/read-summary/buku/contoh-buku/bab-1-awal-perjalanan/" \
@@ -116,7 +139,7 @@ assert_contains "$CHAPTER_TWO" "Di halaman ini" "Indonesian table of contents la
 assert_contains "$CHAPTER_TWO" "Edit halaman ini di GitHub →" "Indonesian edit link"
 assert_contains "$CHAPTER_TWO" "Kembali ke atas" "Indonesian back-to-top label"
 assert_contains "$CHAPTER_TWO" "Ganti tema" "Indonesian theme-toggle label"
-assert_contains "$CHAPTER_TWO" "© 2026 Read Summary." "Indonesian footer copyright"
+assert_contains "$CHAPTER_TWO" "Hak cipta Read Summary." "timeless Indonesian footer copyright"
 assert_not_contains "$CHAPTER_TWO" "Hextra GitHub Homepage" "English powered-by tooltip"
 
 for content_page in \

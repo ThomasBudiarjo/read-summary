@@ -6,11 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -22,17 +17,19 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read
     env:
       HUGO_VERSION: 0.168.0
+      HUGO_SHA256: b7cd5087c39bf5584e40180bd04fab0c6fb19f2913cd63121da8663e112a08db
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          submodules: recursive
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Go
-        uses: actions/setup-go@v7
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
           cache: true
@@ -40,36 +37,44 @@ jobs:
       - name: Install Hugo Extended
         run: |
           curl --fail --location --silent --show-error \
+            --retry 5 --retry-delay 2 --retry-all-errors \
             --output "${RUNNER_TEMP}/hugo.deb" \
             "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          printf '%s  %s\n' "${HUGO_SHA256}" "${RUNNER_TEMP}/hugo.deb" \
+            | sha256sum --check --strict
           sudo dpkg --install "${RUNNER_TEMP}/hugo.deb"
 
       - name: Configure Pages
         id: pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Download Hugo modules
         run: hugo mod download
 
-      - name: Build with Hugo
+      - name: Verify and build site
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+          SITE_BASE_URL: ${{ steps.pages.outputs.base_url }}/
+        run: scripts/check-site.sh
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: ./public
 
   deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

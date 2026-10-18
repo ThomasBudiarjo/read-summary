@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Lang | default "id" }}" dir="{{ partial "utils/hugo-compat/language-direction.html" .Site.Language | default "ltr" }}">
+  <body
+    style='font-family:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"; height:100vh; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center'
+  >
+    <main id="content">
+      <style>
+        body {
+          color: #000;
+          background: #fff;
+          margin: 0;
+        }
+
+        .hextra-error-h1 {
+          border-right: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .hextra-error-copy {
+          display: inline-block;
+          text-align: left;
+        }
+
+        .hextra-error-copy h2,
+        .hextra-error-copy p {
+          font-size: 14px;
+          font-weight: 400;
+          margin: 0;
+        }
+
+        .hextra-error-copy h2 {
+          line-height: 24px;
+        }
+
+        .hextra-error-copy p {
+          line-height: 22px;
+        }
+
+        .hextra-error-copy a {
+          color: inherit;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          body {
+            color: #fff;
+            background: #000;
+          }
+
+          .hextra-error-h1 {
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+          }
+        }
+      </style>
+      <h1
+        class="hextra-error-h1"
+        style='display: inline-block; margin: 0 20px 0 0; padding-right: 23px; font-size: 24px; font-weight: 500; vertical-align: top; line-height: 68px; font-feature-settings: "rlig" 1,"calt" 1,"ss01" 1,"ss06" 1 !important;'
+      >
+        404
+      </h1>
+      <div class="hextra-error-copy">
+        <h2>Halaman tidak ditemukan</h2>
+        <p>Halaman yang Anda cari tidak ada atau telah dipindahkan.</p>
+        <p><a href="{{ .Site.Home.RelPermalink }}">Kembali ke beranda</a></p>
+      </div>
+    </main>
+  </body>
+</html>
