@@ -28,6 +28,17 @@ assert_contains() {
   fi
 }
 
+assert_not_contains() {
+  local file="$1"
+  local unexpected="$2"
+  local description="$3"
+
+  if grep -Fq -- "$unexpected" "$file"; then
+    printf 'Unexpected %s in %s: %s\n' "$description" "$file" "$unexpected" >&2
+    exit 1
+  fi
+}
+
 assert_href() {
   local file="$1"
   local target="$2"
@@ -100,11 +111,13 @@ assert_contains "$CHAPTER_TWO" "Bab 3: Pelajaran Utama" "next sibling chapter la
 
 assert_contains "$CHAPTER_TWO" "Lewati ke konten" "Indonesian skip link"
 assert_contains "$CHAPTER_TWO" "Cari..." "Indonesian search placeholder"
+assert_contains "$CHAPTER_TWO" "aria-label=Tutup" "Indonesian search-dialog close label"
 assert_contains "$CHAPTER_TWO" "Di halaman ini" "Indonesian table of contents label"
 assert_contains "$CHAPTER_TWO" "Edit halaman ini di GitHub →" "Indonesian edit link"
 assert_contains "$CHAPTER_TWO" "Kembali ke atas" "Indonesian back-to-top label"
 assert_contains "$CHAPTER_TWO" "Ganti tema" "Indonesian theme-toggle label"
-assert_contains "$CHAPTER_TWO" "Didukung oleh Hextra" "Indonesian footer attribution"
+assert_contains "$CHAPTER_TWO" "© 2026 Read Summary." "Indonesian footer copyright"
+assert_not_contains "$CHAPTER_TWO" "Hextra GitHub Homepage" "English powered-by tooltip"
 
 for content_page in \
   "$BOOK_INDEX" \
