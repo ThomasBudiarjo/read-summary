@@ -3,8 +3,6 @@ title: "Bab 3: Pelajaran Utama"
 weight: 3
 ---
 
-# Bab 3: Pelajaran Utama
-
 > **Ringkasan contoh:** Bab, tokoh, dan peristiwa di halaman ini sepenuhnya fiksi.
 
 Peta membawa Nara kembali ke bukit yang menghadap desanya. Ia akhirnya memahami bahwa kakeknya tidak meninggalkan petunjuk menuju harta, melainkan mengajak Nara melihat tempat asalnya dari sudut pandang yang baru.

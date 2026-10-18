@@ -6,8 +6,6 @@ sidebar:
   open: true
 ---
 
-# Contoh Buku
-
 > **Konten contoh:** Buku dan seluruh ringkasan berikut bersifat fiksi. Konten ini hanya memperlihatkan cara menyusun catatan buku per bab.
 
 *Contoh Buku* mengisahkan perjalanan Nara meninggalkan desa, menghadapi hambatan, dan memahami arti keberanian yang sebenarnya.

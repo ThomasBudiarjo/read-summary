@@ -3,8 +3,6 @@ title: "Bab 2: Menghadapi Rintangan"
 weight: 2
 ---
 
-# Bab 2: Menghadapi Rintangan
-
 > **Ringkasan contoh:** Bab, tokoh, dan peristiwa di halaman ini sepenuhnya fiksi.
 
 Di tengah perjalanan, hujan deras merusak jembatan yang harus dilalui Nara. Upaya pertamanya untuk menyeberang gagal. Alih-alih menyerah, ia mengamati arus sungai, meminta bantuan warga sekitar, dan bersama-sama membuat jalur baru.

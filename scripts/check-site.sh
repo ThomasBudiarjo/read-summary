@@ -40,6 +40,17 @@ assert_href() {
   fi
 }
 
+assert_single_h1() {
+  local file="$1"
+  local count
+
+  count="$({ grep -oE -- '<h1([[:space:]>])' "$file" || true; } | wc -l)"
+  if [[ "$count" -ne 1 ]]; then
+    printf 'Expected one rendered H1 in %s, found %s\n' "$file" "$count" >&2
+    exit 1
+  fi
+}
+
 readonly -a EXPECTED_PAGES=(
   "public/index.html"
   "public/buku/index.html"
@@ -86,5 +97,22 @@ assert_href "$CHAPTER_THREE" "/read-summary/buku/contoh-buku/bab-2-menghadapi-ri
 assert_contains "$CHAPTER_TWO" "Contoh Buku" "parent book label"
 assert_contains "$CHAPTER_TWO" "Bab 1: Awal Perjalanan" "previous sibling chapter label"
 assert_contains "$CHAPTER_TWO" "Bab 3: Pelajaran Utama" "next sibling chapter label"
+
+assert_contains "$CHAPTER_TWO" "Lewati ke konten" "Indonesian skip link"
+assert_contains "$CHAPTER_TWO" "Cari..." "Indonesian search placeholder"
+assert_contains "$CHAPTER_TWO" "Di halaman ini" "Indonesian table of contents label"
+assert_contains "$CHAPTER_TWO" "Edit halaman ini di GitHub →" "Indonesian edit link"
+assert_contains "$CHAPTER_TWO" "Kembali ke atas" "Indonesian back-to-top label"
+assert_contains "$CHAPTER_TWO" "Ganti tema" "Indonesian theme-toggle label"
+assert_contains "$CHAPTER_TWO" "Didukung oleh Hextra" "Indonesian footer attribution"
+
+for content_page in \
+  "$BOOK_INDEX" \
+  "$EXAMPLE_BOOK" \
+  "$CHAPTER_ONE" \
+  "$CHAPTER_TWO" \
+  "$CHAPTER_THREE"; do
+  assert_single_h1 "$content_page"
+done
 
 printf 'Site checks passed.\n'
