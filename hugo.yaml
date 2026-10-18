@@ -1,0 +1,65 @@
+baseURL: "https://thomasbudiarjo.github.io/read-summary/"
+title: "Read Summary"
+locale: "id-ID"
+defaultContentLanguage: "id"
+enableRobotsTXT: true
+hasCJKLanguage: false
+
+module:
+  hugoVersion:
+    extended: true
+    min: "0.146.0"
+  imports:
+    - path: github.com/imfing/hextra
+
+markup:
+  highlight:
+    noClasses: false
+  goldmark:
+    renderer:
+      unsafe: true
+
+menu:
+  main:
+    - name: Buku
+      pageRef: /buku
+      weight: 1
+    - name: Cari
+      weight: 2
+      params:
+        type: search
+    - name: GitHub
+      weight: 3
+      url: "https://github.com/thomasbudiarjo/read-summary"
+      params:
+        icon: github
+
+params:
+  description: Ringkasan buku berbahasa Indonesia yang ringkas dan mudah dibaca.
+
+  navbar:
+    displayTitle: true
+    displayLogo: false
+
+  theme:
+    default: system
+    displayToggle: true
+
+  footer:
+    enable: true
+    displayCopyright: true
+    displayPoweredBy: true
+
+  search:
+    enable: true
+    type: flexsearch
+    flexsearch:
+      index: content
+      tokenize: forward
+
+  editURL:
+    enable: true
+    base: "https://github.com/thomasbudiarjo/read-summary/edit/main/content"
+
+  page:
+    displayPagination: true
