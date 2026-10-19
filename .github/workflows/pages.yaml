@@ -48,9 +48,6 @@ jobs:
         id: pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
-      - name: Download Hugo modules
-        run: hugo mod download
-
       - name: Verify and build site
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
