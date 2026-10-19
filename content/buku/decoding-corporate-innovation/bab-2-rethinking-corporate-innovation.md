@@ -27,10 +27,14 @@ Sekarang perubahan bergerak lebih cepat daripada kemampuan perusahaan menyesuaik
 
 Penulis memakai riset McKinsey untuk membandingkan dua kondisi:
 
+{{< bookfigure src="images/buku/decoding-corporate-innovation/hlm39-mckinsey-disruption.png" alt="Ilustrasi tanpa angka. Pada perubahan inkremental, Business as usual punya potensi pertumbuhan besar tanpa pita ketidakpastian, sedangkan inovasi kecil dengan pita tipis. Pada disrupsi fundamental, Business as usual mengecil dengan pita ketidakpastian tebal, dan inovasi membesar." source="McKinsey & Company" page="39" >}}
+
+{{< details title="Data sumber grafik (hlm. 39)" closed="true" >}}
 | Kondisi industri | Business as usual | Inovasi |
 |---|---|---|
 | Perubahan **inkremental** (berkembang sedikit demi sedikit secara teratur, definisi dari buku) | Ruang pertumbuhan **jauh lebih besar** | Lebih kecil |
 | **Terdisrupsi secara fundamental** | Potensi pertumbuhan **mengecil** dan rentang ketidakpastian **menebal** | Potensi pertumbuhan **meningkat signifikan** |
+{{< /details >}}
 
 Kesimpulan penulis: **di era disrupsi, menjalankan rutinitas bisnis lebih berisiko daripada berinovasi.**
 

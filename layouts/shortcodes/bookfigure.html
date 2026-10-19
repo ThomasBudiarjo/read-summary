@@ -1,0 +1,13 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" -}}
+{{- $source := .Get "source" -}}
+{{- $page := .Get "page" -}}
+{{- if or (not $src) (not $alt) (not $source) (not $page) -}}
+  {{- errorf "bookfigure requires src, alt, source, and page (%s)" .Position -}}
+{{- end -}}
+<figure class="read-figure not-prose">
+  <img src="{{ $src | relURL }}" alt="{{ $alt }}" width="1920" height="1080" decoding="async">
+  <figcaption class="read-figure__caption">
+    <span class="read-figure__source">Sumber: {{ $source }} · hlm. {{ $page }}</span>
+  </figcaption>
+</figure>

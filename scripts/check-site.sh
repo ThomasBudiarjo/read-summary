@@ -77,6 +77,168 @@ assert_single_h1() {
   fi
 }
 
+assert_chart() {
+  local file="$1"
+  local image_name="$2"
+  local source="$3"
+  local printed_page="$4"
+  local figure
+  local caption
+  local expected
+  local image_path="public/images/buku/decoding-corporate-innovation/${image_name}"
+  shift 4
+
+  if [[ ! -f "$image_path" ]]; then
+    printf 'Missing chart image file: %s\n' "$image_path" >&2
+    exit 1
+  fi
+
+  if ! figure="$(
+    awk -v image_name="$image_name" '
+      BEGIN { RS = "</figure>" }
+      index($0, "<figure") && index($0, image_name) {
+        print
+        found = 1
+        exit
+      }
+      END {
+        if (!found) {
+          exit 1
+        }
+      }
+    ' "$file"
+  )"; then
+    printf 'Missing chart figure in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Eq -- '<figure[^>]*class=("([^"]*[[:space:]])?read-figure([[:space:]][^"]*)?"|read-figure)([[:space:]>])' <<<"$figure"; then
+    printf 'Missing read-figure markup in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Eq -- '<img[[:space:]][^>]*src=(["'\'']?)[^"'\''[:space:]>]*'"$image_name"'(["'\'']|[[:space:]>])' <<<"$figure"; then
+    printf 'Missing chart image in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Eq -- '<img[[:space:]][^>]*alt="[^"]{12,}"' <<<"$figure"; then
+    printf 'Missing descriptive chart alt text in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Fq -- '<figcaption' <<<"$figure"; then
+    printf 'Missing chart figcaption in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  caption="${figure##*<figcaption}"
+  if ! grep -Fq -- "Sumber" <<<"$caption" || ! grep -Fq -- "$source" <<<"$caption"; then
+    printf 'Missing chart source in %s for %s: %s\n' "$file" "$image_name" "$source" >&2
+    exit 1
+  fi
+
+  if ! grep -Fq -- "hlm. $printed_page" <<<"$caption"; then
+    printf 'Missing printed-page caption in %s for %s: hlm. %s\n' \
+      "$file" "$image_name" "$printed_page" >&2
+    exit 1
+  fi
+
+  for expected in "$@"; do
+    if ! grep -Fq -- "$expected" <<<"$figure"; then
+      printf 'Missing representative chart text in %s for %s: %s\n' \
+        "$file" "$image_name" "$expected" >&2
+      exit 1
+    fi
+  done
+}
+
+assert_source_data_details() {
+  local file="$1"
+  local printed_page="$2"
+  local title="Data sumber grafik (hlm. $printed_page)"
+  local count
+  local details
+  local expected
+  shift 2
+
+  count="$({ grep -Fo -- "$title" "$file" || true; } | wc -l)"
+  if [[ "$count" -ne 1 ]]; then
+    printf 'Expected one source-data details block in %s for hlm. %s, found %s\n' \
+      "$file" "$printed_page" "$count" >&2
+    exit 1
+  fi
+
+  if ! details="$(
+    awk -v title="$title" '
+      BEGIN { RS = "</details>" }
+      index($0, title) {
+        start = match($0, /<details[[:space:]>]/)
+        if (start > 0) {
+          print substr($0, start)
+        } else {
+          print
+        }
+        found = 1
+        exit
+      }
+      END {
+        if (!found) {
+          exit 1
+        }
+      }
+    ' "$file"
+  )"; then
+    printf 'Missing source-data details markup in %s for hlm. %s\n' \
+      "$file" "$printed_page" >&2
+    exit 1
+  fi
+
+  count="$({ grep -oE -- '<details([[:space:]>])' <<<"$details" || true; } | wc -l)"
+  if [[ "$count" -ne 1 ]]; then
+    printf 'Expected one details element in source-data block in %s for hlm. %s, found %s\n' \
+      "$file" "$printed_page" "$count" >&2
+    exit 1
+  fi
+
+  if grep -Eq -- '<details[^>]*[[:space:]]open([[:space:]=>]|$)' <<<"$details"; then
+    printf 'Expected closed source-data details block in %s for hlm. %s\n' \
+      "$file" "$printed_page" >&2
+    exit 1
+  fi
+
+  count="$({ grep -oE -- '<table([[:space:]>])' <<<"$details" || true; } | wc -l)"
+  if [[ "$count" -ne 1 ]]; then
+    printf 'Expected one source-data table in %s for hlm. %s, found %s\n' \
+      "$file" "$printed_page" "$count" >&2
+    exit 1
+  fi
+
+  for expected in "$@"; do
+    if ! grep -Fq -- "$expected" <<<"$details"; then
+      printf 'Missing preserved source data in %s for hlm. %s: %s\n' \
+        "$file" "$printed_page" "$expected" >&2
+      exit 1
+    fi
+  done
+}
+
+assert_compiled_css_matches() {
+  local expected="$1"
+  local description="$2"
+  local css_file
+
+  shopt -s nullglob
+  for css_file in public/css/compiled/*.css public/css/*.css; do
+    if [[ -f "$css_file" ]] && grep -Eq -- "$expected" "$css_file"; then
+      return
+    fi
+  done
+
+  printf 'Missing %s in compiled site CSS matching: %s\n' "$description" "$expected" >&2
+  exit 1
+}
+
 readonly -a EXPECTED_PAGES=(
   "public/index.html"
   "public/404.html"
@@ -85,6 +247,9 @@ readonly -a EXPECTED_PAGES=(
   "public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
   "public/buku/contoh-buku/bab-2-menghadapi-rintangan/index.html"
   "public/buku/contoh-buku/bab-3-pelajaran-utama/index.html"
+  "public/buku/decoding-corporate-innovation/prolog/index.html"
+  "public/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/index.html"
+  "public/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/index.html"
 )
 
 for page in "${EXPECTED_PAGES[@]}"; do
@@ -98,6 +263,9 @@ readonly EXAMPLE_BOOK="public/buku/contoh-buku/index.html"
 readonly CHAPTER_ONE="public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
 readonly CHAPTER_TWO="public/buku/contoh-buku/bab-2-menghadapi-rintangan/index.html"
 readonly CHAPTER_THREE="public/buku/contoh-buku/bab-3-pelajaran-utama/index.html"
+readonly INNOVATION_PROLOG="public/buku/decoding-corporate-innovation/prolog/index.html"
+readonly INNOVATION_CHAPTER_ONE="public/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/index.html"
+readonly INNOVATION_CHAPTER_TWO="public/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/index.html"
 
 assert_href "$HOME_PAGE" "/read-summary/buku/"
 assert_href "$HOME_PAGE" "/read-summary/buku/contoh-buku/"
@@ -150,5 +318,98 @@ for content_page in \
   "$CHAPTER_THREE"; do
   assert_single_h1 "$content_page"
 done
+
+assert_chart \
+  "$INNOVATION_PROLOG" \
+  "hlm6-wef-gci-indonesia.png" \
+  "WEF Global Competitiveness Index 2019" \
+  "6" \
+  "Innovation capability 38" \
+  "Market size 82"
+
+assert_chart \
+  "$INNOVATION_CHAPTER_ONE" \
+  "hlm22-bain-high-performer.png" \
+  "Bain Innovation Assessment survey, 2012" \
+  "22" \
+  "High performer" \
+  "13%" \
+  "5%" \
+  "−56"
+
+assert_chart \
+  "$INNOVATION_CHAPTER_ONE" \
+  "hlm25-bcg-readiness.png" \
+  "BCG Global Innovation Survey 2024; BCG analysis" \
+  "25" \
+  "Ready" \
+  "Unready" \
+  "2024" \
+  "3" \
+  "97"
+
+assert_chart \
+  "$INNOVATION_CHAPTER_ONE" \
+  "hlm26-bcg-priority.png" \
+  "BCG Global Innovation Survey 2024; BCG analysis" \
+  "26" \
+  "Top priority" \
+  "Top-three priority" \
+  "2005" \
+  "19" \
+  "47" \
+  "2024" \
+  "35" \
+  "48" \
+  "83"
+
+assert_chart \
+  "$INNOVATION_CHAPTER_TWO" \
+  "hlm39-mckinsey-disruption.png" \
+  "McKinsey & Company" \
+  "39" \
+  "inkremental" \
+  "fundamental" \
+  "Business as usual" \
+  "inovasi" \
+  "tanpa angka"
+
+assert_source_data_details \
+  "$INNOVATION_PROLOG" \
+  "6" \
+  "Innovation capability" \
+  ">38<"
+
+assert_source_data_details \
+  "$INNOVATION_CHAPTER_ONE" \
+  "22" \
+  "High performer" \
+  ">−56<"
+
+assert_source_data_details \
+  "$INNOVATION_CHAPTER_ONE" \
+  "25" \
+  "Ready" \
+  ">3<" \
+  ">97<"
+
+assert_source_data_details \
+  "$INNOVATION_CHAPTER_ONE" \
+  "26" \
+  "Top priority" \
+  ">35<" \
+  ">48<" \
+  ">83<"
+
+assert_source_data_details \
+  "$INNOVATION_CHAPTER_TWO" \
+  "39" \
+  "Kondisi industri" \
+  "Business as usual" \
+  "Inovasi"
+
+assert_compiled_css_matches '\.read-figure[[:space:]]*\{' "custom figure CSS"
+assert_compiled_css_matches '\.dark[[:space:]]+\.read-figure' "dark-mode figure rule"
+assert_compiled_css_matches 'width:[[:space:]]*100%' "full-width chart image"
 
 printf 'Site checks passed.\n'

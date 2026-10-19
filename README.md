@@ -63,3 +63,25 @@ Satu kali saja, buka **Settings → Pages → Build and deployment**, lalu pilih
 3. Periksa hasilnya di `https://thomasbudiarjo.github.io/read-summary/`.
 
 Sebelum push, jalankan `bash scripts/check-site.sh` agar build dan navigasi tervalidasi.
+
+## Gambar buku
+
+Grafik yang sudah selesai disimpan sebagai PNG di `static/images/buku/<slug>/`, lalu ditampilkan dengan shortcode `bookfigure`:
+
+```markdown
+{{</* bookfigure src="images/buku/nama-buku/hlm-6.png" alt="Deskripsi singkat dalam bahasa Indonesia." source="Nama sumber" page="6" */>}}
+```
+
+Shortcode membuat gambar selebar konten, dengan sudut membulat dan kartu putih agar tetap terbaca di mode gelap. `alt` menjelaskan isi gambar. Keterangan di bawahnya memakai `source` dan nomor halaman cetak pada `page`.
+
+Tabel angka asli tetap di bawah gambar, di dalam blok tertutup:
+
+```markdown
+{{</* details title="Data sumber grafik (hlm. 6)" closed="true" */>}}
+| Kolom | Nilai |
+|---|---|
+| Contoh | 1 |
+{{</* /details */>}}
+```
+
+Gambar yang sumbu, koordinat, atau labelnya tidak terbaca tidak ditampilkan. Catatan `[tidak jelas]` tetap terlihat di samping bagian itu.
