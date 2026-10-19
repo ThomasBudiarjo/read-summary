@@ -64,17 +64,17 @@ Satu kali saja, buka **Settings → Pages → Build and deployment**, lalu pilih
 
 Sebelum push, jalankan `bash scripts/check-site.sh` agar build dan navigasi tervalidasi.
 
-## Grafik buku
+## Gambar buku
 
-Gambar yang angkanya tercetak jelas digambar ulang dengan shortcode `chart`, bukan potongan pindaian halaman. Data tiap gambar berada di `data/charts/<id>.yaml`, lalu dipanggil di posisi gambar asli:
+Grafik yang sudah selesai disimpan sebagai PNG di `static/images/buku/<slug>/`, lalu ditampilkan dengan shortcode `bookfigure`:
 
 ```markdown
-{{</* chart "id-grafik" */>}}
+{{</* bookfigure src="images/buku/nama-buku/hlm-6.png" alt="Deskripsi singkat dalam bahasa Indonesia." source="Nama sumber" page="6" */>}}
 ```
 
-Jenis yang didukung: `bar`, `metrics`, `stacked`, dan `arcs`. Setiap berkas data memuat `type`, `title`, `source`, `page` (nomor halaman cetak), serta nilai yang benar-benar tercetak. Shortcode menambahkan keterangan `Sumber: … · hlm. N`.
+Shortcode membuat gambar selebar konten, dengan sudut membulat dan kartu putih agar tetap terbaca di mode gelap. `alt` menjelaskan isi gambar. Keterangan di bawahnya memakai `source` dan nomor halaman cetak pada `page`.
 
-Tabel angka asli tetap di bawah grafik, di dalam blok tertutup:
+Tabel angka asli tetap di bawah gambar, di dalam blok tertutup:
 
 ```markdown
 {{</* details title="Data sumber grafik (hlm. 6)" closed="true" */>}}
@@ -84,4 +84,4 @@ Tabel angka asli tetap di bawah grafik, di dalam blok tertutup:
 {{</* /details */>}}
 ```
 
-Gambar yang sumbu, koordinat, atau labelnya tidak terbaca tidak digambar. Catatan `[tidak jelas]` tetap terlihat di samping grafik.
+Gambar yang sumbu, koordinat, atau labelnya tidak terbaca tidak ditampilkan. Catatan `[tidak jelas]` tetap terlihat di samping bagian itu.

@@ -1,311 +1,36 @@
-.read-chart {
-  --chart-primary: #2563eb;
-  --chart-secondary: #94a3b8;
-  --chart-emphasis: #0f766e;
-  --chart-track: #e5e7eb;
-  --chart-ink: #111827;
-  --chart-muted: #4b5563;
-  --chart-surface: #ffffff;
-  --chart-line: #e5e7eb;
+.content figure.read-figure {
   margin: 1.25rem 0;
-  padding: 1rem;
   overflow: hidden;
-  border: 1px solid var(--chart-line);
+  border: 1px solid #e5e7eb;
   border-radius: 0.9rem;
-  background: var(--chart-surface);
-  color: var(--chart-ink);
+  background: #fff;
+  color: #111827;
 }
 
-.dark .read-chart {
-  --chart-primary: #60a5fa;
-  --chart-secondary: #64748b;
-  --chart-emphasis: #2dd4bf;
-  --chart-track: #1f2937;
-  --chart-ink: #f3f4f6;
-  --chart-muted: #cbd5e1;
-  --chart-surface: #0b1220;
-  --chart-line: #374151;
+.dark .read-figure {
+  border-color: #d1d5db;
+  background: #fff;
+  color: #111827;
 }
 
-.read-chart__header,
-.read-chart__caption,
-.read-chart__axis-note,
-.read-chart__metric-header p,
-.read-chart__arc-item p {
-  margin: 0;
-}
-
-.read-chart__eyebrow,
-.read-chart__axis-note,
-.read-chart__source,
-.read-chart__metric-header p,
-.read-chart__arc-item p {
-  color: var(--chart-muted);
-  font-size: 0.82rem;
-  line-height: 1.45;
-}
-
-.read-chart__title,
-.read-chart h5 {
-  margin: 0.15rem 0 0;
-  color: var(--chart-ink);
-  font-size: 1rem;
-  line-height: 1.35;
-}
-
-.read-chart__description {
-  margin: 0.35rem 0 0;
-  color: var(--chart-muted);
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-.read-chart__legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  margin: 0.85rem 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--chart-muted);
-  font-size: 0.82rem;
-}
-
-.read-chart__legend li,
-.read-chart__bar-row,
-.read-chart__metric-row,
-.read-chart__stack-row,
-.read-chart__arc-item {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.read-chart__swatch,
-.read-chart__fill,
-.read-chart__segment {
-  background: var(--chart-primary);
-}
-
-.read-chart__swatch {
-  width: 0.72rem;
-  height: 0.72rem;
-  margin-right: 0.4rem;
-  border-radius: 999px;
-}
-
-.read-chart__swatch.is-secondary,
-.read-chart__segment.is-secondary,
-.read-chart__metric-row:last-child .read-chart__fill {
-  background: var(--chart-secondary);
-}
-
-.read-chart__visual {
-  margin-top: 0.9rem;
-}
-
-.read-chart__bar-list,
-.read-chart__stack-list,
-.read-chart__metric-list {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.read-chart__bar-row,
-.read-chart__metric-row,
-.read-chart__stack-row {
-  display: grid;
-  grid-template-columns: minmax(7.5rem, 0.9fr) minmax(0, 2.2fr) auto;
-  gap: 0.55rem 0.75rem;
-}
-
-.read-chart__bar-label,
-.read-chart__series-label,
-.read-chart__segment-value,
-.read-chart__value {
-  line-height: 1.3;
-}
-
-.read-chart__bar-label,
-.read-chart__series-label {
-  overflow-wrap: anywhere;
-  font-size: 0.84rem;
-}
-
-.read-chart__track,
-.read-chart__stack {
-  height: 0.72rem;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--chart-track);
-}
-
-.read-chart__stack-cell {
-  min-width: 0;
-}
-
-.read-chart__stack {
-  display: flex;
-  height: 0.85rem;
-}
-
-.read-chart__stack-values {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem;
-  margin: 0.2rem 0 0;
-  color: var(--chart-muted);
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.read-chart__fill,
-.read-chart__segment {
+.content figure.read-figure img {
   display: block;
-  height: 100%;
-  min-width: 0;
+  width: 100%;
+  height: auto;
 }
 
-.read-chart__segment.is-secondary {
-  background: var(--chart-secondary);
-}
-
-.read-chart__value {
-  font-size: 0.84rem;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-.read-chart__bar-row.is-emphasized .read-chart__fill,
-.read-chart__swatch.is-emphasis {
-  background: var(--chart-emphasis);
-}
-
-.read-chart__bar-row.is-emphasized .read-chart__bar-label,
-.read-chart__bar-row.is-emphasized .read-chart__value {
-  color: var(--chart-emphasis);
-  font-weight: 700;
-}
-
-.read-chart__metric {
-  padding-top: 0.35rem;
-}
-
-.read-chart__metric + .read-chart__metric {
-  margin-top: 0.8rem;
-  border-top: 1px solid var(--chart-line);
-}
-
-.read-chart__metric-bars {
-  display: grid;
-  gap: 0.45rem;
-  margin-top: 0.45rem;
-}
-
-.read-chart__metric-bars.is-bipolar .read-chart__metric-row.is-negative .read-chart__fill {
-  margin-left: auto;
-  background: var(--chart-emphasis);
-}
-
-.read-chart__axis-note {
-  margin-top: 0.7rem;
-}
-
-.content figure.read-chart > .read-chart__caption {
-  display: grid;
-  gap: 0.2rem;
-  margin-top: 0.85rem;
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--chart-line);
-  color: var(--chart-muted);
+.content figure.read-figure > .read-figure__caption {
+  display: block;
+  margin: 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  border-top: 1px solid #e5e7eb;
+  color: #4b5563;
   font-size: 0.84rem;
   line-height: 1.45;
   text-align: start;
 }
 
-.read-chart__source {
-  display: block;
-}
-
-.read-chart__arc-groups {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.read-chart__arc-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.65rem;
-}
-
-.read-chart__arc-item {
-  flex-direction: column;
-  gap: 0.25rem;
-  text-align: center;
-}
-
-.read-chart__arc {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 100%;
-  height: 5.5rem;
-  padding: 0.85rem 0.4rem 0;
-}
-
-.read-chart__arc-potential {
-  display: block;
-  box-sizing: border-box;
-  width: 6.2rem;
-  height: 3.1rem;
-  border: 0.42rem solid var(--chart-primary);
-  border-bottom: 0;
-  border-radius: 6.2rem 6.2rem 0 0;
-}
-
-.read-chart__arc.is-medium .read-chart__arc-potential {
-  width: 4.5rem;
-  height: 2.25rem;
-  border-width: 0.34rem;
-  border-radius: 4.5rem 4.5rem 0 0;
-}
-
-.read-chart__arc.is-small .read-chart__arc-potential {
-  width: 2.8rem;
-  height: 1.4rem;
-  border-width: 0.24rem;
-  border-radius: 2.8rem 2.8rem 0 0;
-}
-
-.read-chart__arc.is-uncertainty-thin .read-chart__arc-potential {
-  box-shadow: 0 0 0 4px var(--chart-secondary);
-}
-
-.read-chart__arc.is-uncertainty-medium .read-chart__arc-potential {
-  box-shadow: 0 0 0 6px var(--chart-secondary);
-}
-
-.read-chart__arc.is-uncertainty-thick .read-chart__arc-potential {
-  box-shadow: 0 0 0 11px var(--chart-secondary);
-}
-
-@media (max-width: 640px) {
-  .read-chart {
-    padding: 0.85rem;
-  }
-
-  .read-chart__bar-row,
-  .read-chart__metric-row,
-  .read-chart__stack-row,
-  .read-chart__arc-groups,
-  .read-chart__arc-row {
-    grid-template-columns: 1fr;
-  }
-
-  .read-chart__value {
-    text-align: left;
-  }
-
+.dark .read-figure > .read-figure__caption {
+  border-top-color: #e5e7eb;
+  color: #4b5563;
 }

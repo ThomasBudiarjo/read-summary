@@ -116,7 +116,7 @@ Dampak inovasi tidak hanya terlihat di keuangan. Di perusahaan inovatif ada "get
 
 **Grafik hlm. 22** (sumber: *Bain Innovation Assessment survey, 2012*; ejaan di buku: "Assesment survei"). Judulnya: "Perusahaan dengan kinerja inovasi terbaik menunjukkan pertumbuhan yang lebih tinggi, skor eNPS karyawan yang lebih baik, dan efektivitas pengambilan keputusan yang lebih kuat." Grafik membandingkan *High performer* dengan *Other*:
 
-{{< chart "bain-high-performer" >}}
+{{< bookfigure src="images/buku/decoding-corporate-innovation/hlm22-bain-high-performer.png" alt="Perbandingan high performer dan perusahaan lain. Perusahaan dengan pertumbuhan penjualan di atas 5% per tahun: 72 lawan 41, rata-rata pertumbuhan 13% lawan 5%. Loyalitas karyawan (NPS): 23 lawan −56. Efektivitas keputusan: 72 lawan 57." source="Bain Innovation Assessment survey, 2012" page="22" >}}
 
 {{< details title="Data sumber grafik (hlm. 22)" closed="true" >}}
 | Ukuran | High performer | Other |
@@ -171,7 +171,7 @@ Kesadaran berinovasi makin tumbuh. Anehnya, makin sedikit perusahaan yang siap m
 
 **Grafik hlm. 26** (sumber: *BCG Global Innovation Survey 2024; BCG analysis*; ejaan di buku: "Survei"). Pertanyaannya: *Where does innovation/R&D/product development rank among your company's priorities? (%)*. Catatan grafik: n = 1.003 responden global; tidak ada data untuk 2011 dan 2017.
 
-{{< chart "innovation-priorities" >}}
+{{< bookfigure src="images/buku/decoding-corporate-innovation/hlm26-bcg-priority.png" alt="Peringkat inovasi, R&D, atau pengembangan produk di antara prioritas perusahaan, 2005–2024. Pada 2005, Top priority 19 dan Top-three priority 47, total 66. Pada 2024, Top priority 35 dan Top-three priority 48, total 83. Tidak ada data untuk 2011 dan 2017." source="BCG Global Innovation Survey 2024; BCG analysis" page="26" >}}
 
 {{< details title="Data sumber grafik (hlm. 26)" closed="true" >}}
 | Tahun | Top priority | Top-three priority (selain top) | Total |
@@ -208,7 +208,7 @@ Di balik antusiasme itu, persentase perusahaan yang dinilai **innovation ready**
 
 **Grafik hlm. 25**: *Exhibit 2 – Innovation Readiness Has Declined Significantly Since 2022* (sumber: *BCG Global Innovation Survey 2024; BCG analysis*). Respondent companies scoring "Ready" vs. "Unready" (%):
 
-{{< chart "innovation-readiness" >}}
+{{< bookfigure src="images/buku/decoding-corporate-innovation/hlm25-bcg-readiness.png" alt="Kesiapan inovasi menurun sejak 2022. Persentase perusahaan Ready dan Unready: 2021 sebesar 20 dan 80, 2022 sebesar 20 dan 80, 2023 sebesar 9 dan 91, 2024 sebesar 3 dan 97, turun 17 poin persentase." source="BCG Global Innovation Survey 2024; BCG analysis" page="25" >}}
 
 {{< details title="Data sumber grafik (hlm. 25)" closed="true" >}}
 | Tahun | Ready | Unready |

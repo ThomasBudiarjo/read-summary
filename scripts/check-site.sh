@@ -79,18 +79,24 @@ assert_single_h1() {
 
 assert_chart() {
   local file="$1"
-  local chart_id="$2"
+  local image_name="$2"
   local source="$3"
   local printed_page="$4"
   local figure
   local caption
   local expected
+  local image_path="public/images/buku/decoding-corporate-innovation/${image_name}"
   shift 4
 
+  if [[ ! -f "$image_path" ]]; then
+    printf 'Missing chart image file: %s\n' "$image_path" >&2
+    exit 1
+  fi
+
   if ! figure="$(
-    awk -v chart_id="$chart_id" '
+    awk -v image_name="$image_name" '
       BEGIN { RS = "</figure>" }
-      index($0, "<figure") && (index($0, "id=chart-" chart_id " ") || index($0, "id=chart-" chart_id ">") || index($0, "id=\"chart-" chart_id "\"")) {
+      index($0, "<figure") && index($0, image_name) {
         print
         found = 1
         exit
@@ -102,36 +108,46 @@ assert_chart() {
       }
     ' "$file"
   )"; then
-    printf 'Missing chart figure in %s: chart-%s\n' "$file" "$chart_id" >&2
+    printf 'Missing chart figure in %s: %s\n' "$file" "$image_name" >&2
     exit 1
   fi
 
-  if ! grep -Eq -- '<figure[^>]*class=("([^"]*[[:space:]])?read-chart([[:space:]][^"]*)?"|read-chart)([[:space:]>])' <<<"$figure"; then
-    printf 'Missing semantic read-chart figure markup in %s: chart-%s\n' "$file" "$chart_id" >&2
+  if ! grep -Eq -- '<figure[^>]*class=("([^"]*[[:space:]])?read-figure([[:space:]][^"]*)?"|read-figure)([[:space:]>])' <<<"$figure"; then
+    printf 'Missing read-figure markup in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Eq -- '<img[[:space:]][^>]*src=(["'\'']?)[^"'\''[:space:]>]*'"$image_name"'(["'\'']|[[:space:]>])' <<<"$figure"; then
+    printf 'Missing chart image in %s: %s\n' "$file" "$image_name" >&2
+    exit 1
+  fi
+
+  if ! grep -Eq -- '<img[[:space:]][^>]*alt="[^"]{12,}"' <<<"$figure"; then
+    printf 'Missing descriptive chart alt text in %s: %s\n' "$file" "$image_name" >&2
     exit 1
   fi
 
   if ! grep -Fq -- '<figcaption' <<<"$figure"; then
-    printf 'Missing chart figcaption in %s: chart-%s\n' "$file" "$chart_id" >&2
+    printf 'Missing chart figcaption in %s: %s\n' "$file" "$image_name" >&2
     exit 1
   fi
 
   caption="${figure##*<figcaption}"
   if ! grep -Fq -- "Sumber" <<<"$caption" || ! grep -Fq -- "$source" <<<"$caption"; then
-    printf 'Missing chart source in %s for chart-%s: %s\n' "$file" "$chart_id" "$source" >&2
+    printf 'Missing chart source in %s for %s: %s\n' "$file" "$image_name" "$source" >&2
     exit 1
   fi
 
   if ! grep -Fq -- "hlm. $printed_page" <<<"$caption"; then
-    printf 'Missing printed-page caption in %s for chart-%s: hlm. %s\n' \
-      "$file" "$chart_id" "$printed_page" >&2
+    printf 'Missing printed-page caption in %s for %s: hlm. %s\n' \
+      "$file" "$image_name" "$printed_page" >&2
     exit 1
   fi
 
   for expected in "$@"; do
     if ! grep -Fq -- "$expected" <<<"$figure"; then
-      printf 'Missing representative chart output in %s for chart-%s: %s\n' \
-        "$file" "$chart_id" "$expected" >&2
+      printf 'Missing representative chart text in %s for %s: %s\n' \
+        "$file" "$image_name" "$expected" >&2
       exit 1
     fi
   done
@@ -305,62 +321,58 @@ done
 
 assert_chart \
   "$INNOVATION_PROLOG" \
-  "gci-indonesia-pillars" \
+  "hlm6-wef-gci-indonesia.png" \
   "WEF Global Competitiveness Index 2019" \
   "6" \
-  "Innovation capability" \
-  ">38<" \
-  "Market size" \
-  ">82<"
+  "Innovation capability 38" \
+  "Market size 82"
 
 assert_chart \
   "$INNOVATION_CHAPTER_ONE" \
-  "bain-high-performer" \
+  "hlm22-bain-high-performer.png" \
   "Bain Innovation Assessment survey, 2012" \
   "22" \
   "High performer" \
-  "Other" \
-  ">13%<" \
-  ">5%<" \
-  ">23<" \
-  ">−56<"
+  "13%" \
+  "5%" \
+  "−56"
 
 assert_chart \
   "$INNOVATION_CHAPTER_ONE" \
-  "innovation-readiness" \
+  "hlm25-bcg-readiness.png" \
   "BCG Global Innovation Survey 2024; BCG analysis" \
   "25" \
   "Ready" \
   "Unready" \
-  ">2024<" \
-  ">3%<" \
-  ">97%<"
+  "2024" \
+  "3" \
+  "97"
 
 assert_chart \
   "$INNOVATION_CHAPTER_ONE" \
-  "innovation-priorities" \
+  "hlm26-bcg-priority.png" \
   "BCG Global Innovation Survey 2024; BCG analysis" \
   "26" \
   "Top priority" \
   "Top-three priority" \
-  ">2005<" \
-  ">19%<" \
-  ">47%<" \
-  ">2024<" \
-  ">35%<" \
-  ">48%<" \
-  ">83%<"
+  "2005" \
+  "19" \
+  "47" \
+  "2024" \
+  "35" \
+  "48" \
+  "83"
 
 assert_chart \
   "$INNOVATION_CHAPTER_TWO" \
-  "disruption-growth-potential" \
+  "hlm39-mckinsey-disruption.png" \
   "McKinsey & Company" \
   "39" \
-  "Incremental changes" \
-  "Fundamental disruption" \
+  "inkremental" \
+  "fundamental" \
   "Business as usual" \
-  "Innovation" \
-  "illustrative"
+  "inovasi" \
+  "tanpa angka"
 
 assert_source_data_details \
   "$INNOVATION_PROLOG" \
@@ -396,7 +408,8 @@ assert_source_data_details \
   "Business as usual" \
   "Inovasi"
 
-assert_compiled_css_matches '\.read-chart[[:space:]]*\{' "custom chart CSS"
-assert_compiled_css_matches '\.dark[[:space:]]+\.read-chart' "dark-mode chart rule"
+assert_compiled_css_matches '\.read-figure[[:space:]]*\{' "custom figure CSS"
+assert_compiled_css_matches '\.dark[[:space:]]+\.read-figure' "dark-mode figure rule"
+assert_compiled_css_matches 'width:[[:space:]]*100%' "full-width chart image"
 
 printf 'Site checks passed.\n'

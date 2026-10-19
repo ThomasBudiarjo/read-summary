@@ -91,7 +91,7 @@ Dalam global competitiveness index, profil **pilar** Indonesia (komponen penilai
 
 **Grafik hlm. 6** (sumber: *WEF Global Competitiveness Index 2019*, profil "Indonesia", peringkat keseluruhan **50th/141**):
 
-{{< chart "gci-indonesia-pillars" >}}
+{{< bookfigure src="images/buku/decoding-corporate-innovation/hlm6-wef-gci-indonesia.png" alt="Profil Indonesia pada Global Competitiveness Index 2019, peringkat 50 dari 141. Skor pilar: Overall 65, Institutions 58, Infrastructure 68, ICT adoption 55, Macroeconomic stability 90, Health 71, Skills 64, Product market 58, Labour market 58, Financial system 64, Market size 82, Business dynamism 70, Innovation capability 38." source="WEF Global Competitiveness Index 2019" page="6" >}}
 
 {{< details title="Data sumber grafik (hlm. 6)" closed="true" >}}
 | Pilar | Peringkat (dari 141) | Skor (0–100) |
