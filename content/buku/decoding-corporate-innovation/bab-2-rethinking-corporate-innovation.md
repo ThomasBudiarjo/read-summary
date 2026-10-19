@@ -27,10 +27,14 @@ Sekarang perubahan bergerak lebih cepat daripada kemampuan perusahaan menyesuaik
 
 Penulis memakai riset McKinsey untuk membandingkan dua kondisi:
 
+{{< chart "disruption-growth-potential" >}}
+
+{{< details title="Data sumber grafik (hlm. 39)" closed="true" >}}
 | Kondisi industri | Business as usual | Inovasi |
 |---|---|---|
 | Perubahan **inkremental** (berkembang sedikit demi sedikit secara teratur, definisi dari buku) | Ruang pertumbuhan **jauh lebih besar** | Lebih kecil |
 | **Terdisrupsi secara fundamental** | Potensi pertumbuhan **mengecil** dan rentang ketidakpastian **menebal** | Potensi pertumbuhan **meningkat signifikan** |
+{{< /details >}}
 
 Kesimpulan penulis: **di era disrupsi, menjalankan rutinitas bisnis lebih berisiko daripada berinovasi.**
 

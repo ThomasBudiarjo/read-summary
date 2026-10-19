@@ -63,3 +63,25 @@ Satu kali saja, buka **Settings → Pages → Build and deployment**, lalu pilih
 3. Periksa hasilnya di `https://thomasbudiarjo.github.io/read-summary/`.
 
 Sebelum push, jalankan `bash scripts/check-site.sh` agar build dan navigasi tervalidasi.
+
+## Grafik buku
+
+Gambar yang angkanya tercetak jelas digambar ulang dengan shortcode `chart`, bukan potongan pindaian halaman. Data tiap gambar berada di `data/charts/<id>.yaml`, lalu dipanggil di posisi gambar asli:
+
+```markdown
+{{</* chart "id-grafik" */>}}
+```
+
+Jenis yang didukung: `bar`, `metrics`, `stacked`, dan `arcs`. Setiap berkas data memuat `type`, `title`, `source`, `page` (nomor halaman cetak), serta nilai yang benar-benar tercetak. Shortcode menambahkan keterangan `Sumber: … · hlm. N`.
+
+Tabel angka asli tetap di bawah grafik, di dalam blok tertutup:
+
+```markdown
+{{</* details title="Data sumber grafik (hlm. 6)" closed="true" */>}}
+| Kolom | Nilai |
+|---|---|
+| Contoh | 1 |
+{{</* /details */>}}
+```
+
+Gambar yang sumbu, koordinat, atau labelnya tidak terbaca tidak digambar. Catatan `[tidak jelas]` tetap terlihat di samping grafik.

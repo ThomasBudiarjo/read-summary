@@ -1,0 +1,34 @@
+{{- $id := .Get 0 -}}
+{{- if not $id -}}
+  {{- errorf "chart shortcode requires a chart ID (%s)" .Position -}}
+{{- end -}}
+{{- $chart := index hugo.Data.charts $id -}}
+{{- if not $chart -}}
+  {{- errorf "chart shortcode references unknown chart %q (%s)" $id .Position -}}
+{{- end -}}
+{{- $supportedTypes := slice "bar" "metrics" "stacked" "arcs" -}}
+{{- if not (in $supportedTypes $chart.type) -}}
+  {{- errorf "chart %q has unsupported type %q (%s)" $id $chart.type .Position -}}
+{{- end -}}
+
+<figure id="chart-{{ $id }}" class="read-chart read-chart--{{ $chart.type }} not-prose" aria-labelledby="chart-{{ $id }}-title" aria-describedby="chart-{{ $id }}-description chart-{{ $id }}-caption">
+  <header class="read-chart__header">
+    {{- with $chart.eyebrow }}<p class="read-chart__eyebrow">{{ . }}</p>{{ end -}}
+    <h4 id="chart-{{ $id }}-title" class="read-chart__title">{{ $chart.title }}</h4>
+    {{- with $chart.description }}<p id="chart-{{ $id }}-description" class="read-chart__description">{{ . }}</p>{{ end -}}
+  </header>
+  {{- with $chart.legend }}
+    <ul class="read-chart__legend">
+      {{- range . }}
+        <li><span class="read-chart__swatch is-{{ .tone }}" aria-hidden="true"></span>{{ .label }}</li>
+      {{- end }}
+    </ul>
+  {{- end }}
+  <div class="read-chart__visual">
+    {{- partial (printf "charts/%s.html" $chart.type) (dict "chart" $chart) -}}
+  </div>
+  <figcaption id="chart-{{ $id }}-caption" class="read-chart__caption">
+    {{- with $chart.caption }}<span>{{ . }}</span>{{ end -}}
+    <span class="read-chart__source">Sumber: {{ $chart.source }} · hlm. {{ $chart.page }}</span>
+  </figcaption>
+</figure>

@@ -1,0 +1,50 @@
+type: stacked
+title: Kesiapan inovasi menurun sejak 2022
+eyebrow: Exhibit 2
+description: Persentase perusahaan responden yang dinilai Ready dan Unready.
+caption: Innovation Readiness Has Declined Significantly Since 2022.
+source: "BCG Global Innovation Survey 2024; BCG analysis"
+page: 25
+plot_label: Kesiapan inovasi perusahaan, 2021–2024
+scale:
+  max: 100
+  label: Persentase responden
+legend:
+  - label: Ready
+    tone: primary
+  - label: Unready
+    tone: secondary
+series:
+  ready:
+    tone: primary
+  unready:
+    tone: secondary
+items:
+  - label: "2021"
+    total: 100
+    values:
+      - series: ready
+        value: 20
+      - series: unready
+        value: 80
+  - label: "2022"
+    total: 100
+    values:
+      - series: ready
+        value: 20
+      - series: unready
+        value: 80
+  - label: "2023"
+    total: 100
+    values:
+      - series: ready
+        value: 9
+      - series: unready
+        value: 91
+  - label: "2024"
+    total: 100
+    values:
+      - series: ready
+        value: 3
+      - series: unready
+        value: 97

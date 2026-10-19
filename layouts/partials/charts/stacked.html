@@ -1,0 +1,25 @@
+{{- $chart := .chart -}}
+<div class="read-chart__stack-list" role="list" aria-label="{{ $chart.plot_label }}">
+  {{- range $item := $chart.items }}
+    <div class="read-chart__stack-row" role="listitem">
+      <span class="read-chart__bar-label">{{ $item.label }}</span>
+      <div class="read-chart__stack-cell">
+        <div class="read-chart__stack" aria-hidden="true">
+          {{- range $value := $item.values }}
+            {{- $series := index $chart.series $value.series -}}
+            {{- $width := div (mul $value.value 100) $chart.scale.max -}}
+            <span class="read-chart__segment is-{{ $series.tone }}" style="width: {{ $width }}%"></span>
+          {{- end }}
+        </div>
+        <p class="read-chart__stack-values">
+          {{- range $index, $value := $item.values }}
+            {{- if $index }}<span aria-hidden="true"> · </span>{{ end -}}
+            <span class="read-chart__segment-value">{{ $value.value }}%</span>
+          {{- end }}
+        </p>
+      </div>
+      <strong class="read-chart__value">{{ $item.total }}%</strong>
+    </div>
+  {{- end }}
+</div>
+<p class="read-chart__axis-note">{{ $chart.scale.label }}</p>

@@ -1,0 +1,25 @@
+{{- $chart := .chart -}}
+<div class="read-chart__metric-list" aria-label="{{ $chart.plot_label }}">
+  {{- range $chart.metrics }}
+    {{- $metric := . -}}
+    <section class="read-chart__metric">
+      <header class="read-chart__metric-header">
+        <h5>{{ $metric.label }}</h5>
+        <p>{{ $metric.detail }}</p>
+      </header>
+      <div class="read-chart__metric-bars{{ if $metric.bipolar }} is-bipolar{{ end }}" role="list">
+        {{- range $metric.values }}
+          {{- $isNegative := lt .value 0 -}}
+          {{- $magnitude := .value -}}
+          {{- if $isNegative }}{{ $magnitude = mul .value -1 }}{{ end -}}
+          {{- $width := div (mul $magnitude 100) $metric.scale -}}
+          <div class="read-chart__metric-row{{ if $isNegative }} is-negative{{ end }}" role="listitem">
+            <span class="read-chart__series-label">{{ .label }}</span>
+            <div class="read-chart__track" aria-hidden="true"><span class="read-chart__fill" style="width: {{ $width }}%"></span></div>
+            <strong class="read-chart__value">{{ if $isNegative }}−{{ $magnitude }}{{ else }}{{ .value }}{{ end }}{{ $metric.suffix }}</strong>
+          </div>
+        {{- end }}
+      </div>
+    </section>
+  {{- end }}
+</div>

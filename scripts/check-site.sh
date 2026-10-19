@@ -157,7 +157,12 @@ assert_source_data_details() {
     awk -v title="$title" '
       BEGIN { RS = "</details>" }
       index($0, title) {
-        print
+        start = match($0, /<details[[:space:]>]/)
+        if (start > 0) {
+          print substr($0, start)
+        } else {
+          print
+        }
         found = 1
         exit
       }
@@ -207,7 +212,8 @@ assert_compiled_css_matches() {
   local description="$2"
   local css_file
 
-  for css_file in public/css/compiled/*.css; do
+  shopt -s nullglob
+  for css_file in public/css/compiled/*.css public/css/*.css; do
     if [[ -f "$css_file" ]] && grep -Eq -- "$expected" "$css_file"; then
       return
     fi
@@ -348,7 +354,7 @@ assert_chart \
 assert_chart \
   "$INNOVATION_CHAPTER_TWO" \
   "disruption-growth-potential" \
-  "McKinsey &amp; Company" \
+  "McKinsey & Company" \
   "39" \
   "Incremental changes" \
   "Fundamental disruption" \
@@ -390,7 +396,7 @@ assert_source_data_details \
   "Business as usual" \
   "Inovasi"
 
-assert_compiled_css_matches '\.read-chart\{' "custom chart CSS"
+assert_compiled_css_matches '\.read-chart[[:space:]]*\{' "custom chart CSS"
 assert_compiled_css_matches '\.dark[[:space:]]+\.read-chart' "dark-mode chart rule"
 
 printf 'Site checks passed.\n'
