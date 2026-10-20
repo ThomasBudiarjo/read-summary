@@ -11,4 +11,4 @@ Ringkasan buku, langsung ke inti.
 Catatan bacaan berbahasa Indonesia untuk membantu Anda mengingat gagasan penting dari setiap buku.
 {{< /hextra/hero-subtitle >}}
 
-Mulai dari [koleksi buku]({{< ref "/buku" >}}) atau lihat [Contoh Buku]({{< ref "/buku/contoh-buku" >}}), sebuah contoh fiksi yang menunjukkan susunan ringkasan per bab.
+Mulai dari [koleksi buku]({{< ref "/buku" >}}).
