@@ -243,10 +243,7 @@ readonly -a EXPECTED_PAGES=(
   "public/index.html"
   "public/404.html"
   "public/buku/index.html"
-  "public/buku/contoh-buku/index.html"
-  "public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
-  "public/buku/contoh-buku/bab-2-menghadapi-rintangan/index.html"
-  "public/buku/contoh-buku/bab-3-pelajaran-utama/index.html"
+  "public/buku/decoding-corporate-innovation/index.html"
   "public/buku/decoding-corporate-innovation/prolog/index.html"
   "public/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/index.html"
   "public/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/index.html"
@@ -259,17 +256,13 @@ done
 readonly HOME_PAGE="public/index.html"
 readonly NOT_FOUND_PAGE="public/404.html"
 readonly BOOK_INDEX="public/buku/index.html"
-readonly EXAMPLE_BOOK="public/buku/contoh-buku/index.html"
-readonly CHAPTER_ONE="public/buku/contoh-buku/bab-1-awal-perjalanan/index.html"
-readonly CHAPTER_TWO="public/buku/contoh-buku/bab-2-menghadapi-rintangan/index.html"
-readonly CHAPTER_THREE="public/buku/contoh-buku/bab-3-pelajaran-utama/index.html"
+readonly INNOVATION_BOOK="public/buku/decoding-corporate-innovation/index.html"
 readonly INNOVATION_PROLOG="public/buku/decoding-corporate-innovation/prolog/index.html"
 readonly INNOVATION_CHAPTER_ONE="public/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/index.html"
 readonly INNOVATION_CHAPTER_TWO="public/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/index.html"
 
 assert_href "$HOME_PAGE" "/read-summary/buku/"
-assert_href "$HOME_PAGE" "/read-summary/buku/contoh-buku/"
-assert_href "$BOOK_INDEX" "/read-summary/buku/contoh-buku/"
+assert_href "$BOOK_INDEX" "/read-summary/buku/decoding-corporate-innovation/"
 assert_matches "$HOME_PAGE" '<html[^>]*lang="?id(-ID)?"?([[:space:]>])' "Indonesian HTML language"
 assert_matches "$HOME_PAGE" '<link[^>]*rel="?canonical"?[^>]*href="?https://thomasbudiarjo\.github\.io/read-summary/"?' "canonical project URL"
 
@@ -278,44 +271,47 @@ assert_contains "$NOT_FOUND_PAGE" "Halaman yang Anda cari tidak ada atau telah d
 assert_href "$NOT_FOUND_PAGE" "/read-summary/"
 
 for chapter_path in \
-  "/read-summary/buku/contoh-buku/bab-1-awal-perjalanan/" \
-  "/read-summary/buku/contoh-buku/bab-2-menghadapi-rintangan/" \
-  "/read-summary/buku/contoh-buku/bab-3-pelajaran-utama/"; do
-  assert_href "$EXAMPLE_BOOK" "$chapter_path"
+  "/read-summary/buku/decoding-corporate-innovation/prolog/" \
+  "/read-summary/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/" \
+  "/read-summary/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/"; do
+  assert_href "$INNOVATION_BOOK" "$chapter_path"
 done
 
-assert_href "$CHAPTER_ONE" "/read-summary/buku/contoh-buku/"
-assert_href "$CHAPTER_ONE" "/read-summary/buku/contoh-buku/bab-2-menghadapi-rintangan/"
-assert_href "$CHAPTER_ONE" "/read-summary/buku/contoh-buku/bab-3-pelajaran-utama/"
+assert_href "$INNOVATION_PROLOG" "/read-summary/buku/decoding-corporate-innovation/"
+assert_href "$INNOVATION_PROLOG" "/read-summary/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/"
 
-assert_href "$CHAPTER_TWO" "/read-summary/buku/contoh-buku/"
-assert_href "$CHAPTER_TWO" "/read-summary/buku/contoh-buku/bab-1-awal-perjalanan/"
-assert_href "$CHAPTER_TWO" "/read-summary/buku/contoh-buku/bab-3-pelajaran-utama/"
+assert_href "$INNOVATION_CHAPTER_ONE" "/read-summary/buku/decoding-corporate-innovation/"
+assert_href "$INNOVATION_CHAPTER_ONE" "/read-summary/buku/decoding-corporate-innovation/prolog/"
+assert_href "$INNOVATION_CHAPTER_ONE" "/read-summary/buku/decoding-corporate-innovation/bab-2-rethinking-corporate-innovation/"
 
-assert_href "$CHAPTER_THREE" "/read-summary/buku/contoh-buku/"
-assert_href "$CHAPTER_THREE" "/read-summary/buku/contoh-buku/bab-1-awal-perjalanan/"
-assert_href "$CHAPTER_THREE" "/read-summary/buku/contoh-buku/bab-2-menghadapi-rintangan/"
+assert_href "$INNOVATION_CHAPTER_TWO" "/read-summary/buku/decoding-corporate-innovation/"
+assert_href "$INNOVATION_CHAPTER_TWO" "/read-summary/buku/decoding-corporate-innovation/bab-1-innovation-disconnect/"
 
-assert_contains "$CHAPTER_TWO" "Contoh Buku" "parent book label"
-assert_contains "$CHAPTER_TWO" "Bab 1: Awal Perjalanan" "previous sibling chapter label"
-assert_contains "$CHAPTER_TWO" "Bab 3: Pelajaran Utama" "next sibling chapter label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Decoding Corporate Innovation" "parent book label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Prolog" "previous sibling chapter label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Bab 2: Rethinking Corporate Innovation" "next sibling chapter label"
 
-assert_contains "$CHAPTER_TWO" "Lewati ke konten" "Indonesian skip link"
-assert_contains "$CHAPTER_TWO" "Cari..." "Indonesian search placeholder"
-assert_contains "$CHAPTER_TWO" "aria-label=Tutup" "Indonesian search-dialog close label"
-assert_contains "$CHAPTER_TWO" "Di halaman ini" "Indonesian table of contents label"
-assert_contains "$CHAPTER_TWO" "Edit halaman ini di GitHub →" "Indonesian edit link"
-assert_contains "$CHAPTER_TWO" "Kembali ke atas" "Indonesian back-to-top label"
-assert_contains "$CHAPTER_TWO" "Ganti tema" "Indonesian theme-toggle label"
-assert_contains "$CHAPTER_TWO" "Hak cipta Read Summary." "timeless Indonesian footer copyright"
-assert_not_contains "$CHAPTER_TWO" "Hextra GitHub Homepage" "English powered-by tooltip"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Lewati ke konten" "Indonesian skip link"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Cari..." "Indonesian search placeholder"
+assert_contains "$INNOVATION_CHAPTER_ONE" "aria-label=Tutup" "Indonesian search-dialog close label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Di halaman ini" "Indonesian table of contents label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Edit halaman ini di GitHub →" "Indonesian edit link"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Kembali ke atas" "Indonesian back-to-top label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Ganti tema" "Indonesian theme-toggle label"
+assert_contains "$INNOVATION_CHAPTER_ONE" "Hak cipta Read Summary." "timeless Indonesian footer copyright"
+assert_not_contains "$INNOVATION_CHAPTER_ONE" "Hextra GitHub Homepage" "English powered-by tooltip"
+
+if grep -R -q --exclude-dir='*.git' -e 'contoh-buku' -e 'Contoh Buku' public; then
+  printf 'Unexpected example-book reference remains in public/\n' >&2
+  exit 1
+fi
 
 for content_page in \
   "$BOOK_INDEX" \
-  "$EXAMPLE_BOOK" \
-  "$CHAPTER_ONE" \
-  "$CHAPTER_TWO" \
-  "$CHAPTER_THREE"; do
+  "$INNOVATION_BOOK" \
+  "$INNOVATION_PROLOG" \
+  "$INNOVATION_CHAPTER_ONE" \
+  "$INNOVATION_CHAPTER_TWO"; do
   assert_single_h1 "$content_page"
 done
 
